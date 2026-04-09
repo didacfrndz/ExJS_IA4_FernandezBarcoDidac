@@ -197,6 +197,14 @@
       </div>
     </main>
     <script>
+      const nomTasca = document.querySelector("#tarea");
+      const divError = document.querySelector("#mensajeError");
+      const prioridad = document.querySelector("#prioridad");
+      const Tasca = document.querySelector("#previewTexto");
+      const prio = document.querySelector("#previewPrioridad");
+      const preview = document.querySelector(".preview");
+      const mostrarTareas = document.querySelector("#listaTareas");
+      const btn = document.querySelector("#btnAgregar");
       const tareas = [
         {
           tarea: "Preparar examen de JS",
@@ -210,6 +218,53 @@
         },
         { tarea: "Revisar apuntes", prioridad: "baja", estado: "hecha" },
       ];
+
+      nomTasca.addEventListener("input", function () {
+        Tasca.innerHTML = nomTasca.value;
+        divError.innerHTML = "";
+      });
+      prioridad.addEventListener("change", function () {
+        prio.innerHTML = `Prioritat: ${prioridad.value} `;
+        if (prioridad.value == "baja") {
+          preview.classList.add("prio-baixa");
+          preview.classList.remove("prio-mitjana");
+          preview.classList.remove("prio-alta");
+        } else if (prioridad.value == "media") {
+          preview.classList.add("prio-mitjana");
+          preview.classList.remove("prio-baixa");
+          preview.classList.remove("prio-alta");
+        } else if (prioridad.value == "alta") {
+          preview.classList.add("prio-alta");
+          preview.classList.remove("prio-mitjana");
+          preview.classList.remove("prio-baixa");
+        }
+      });
+
+      function mostrarArray() {
+        mostrarTareas.innerHTML = "";
+        for (let i = 0; i < tareas.length; i++) {
+          mostrarTareas.innerHTML += `
+      <div>
+        <h3>${tareas[i].tarea}</h3>
+        <p>${tareas[i].prioridad}</p>
+        <p>${tareas[i].estado}</p>
+      </div>`;
+        }
+      }
+      mostrarArray();
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (nomTasca.value == 0) {
+          divError.innerHTML = "La tasca no pot estar buida";
+        } else {
+          tareas.push({
+            tarea: nomTasca.value,
+            prioridad: prioridad.value,
+            estado: "pendiente",
+          });
+          mostrarArray();
+        }
+      });
     </script>
   </body>
 </html>
